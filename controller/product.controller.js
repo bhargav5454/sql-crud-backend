@@ -30,33 +30,26 @@ const handleCreateProduct = async (req, res) => {
 const handleGetAllProducts = async (req, res) => {
     try {
         const userId = req?.user;
-        const { page = 1, limit = 10 } = req.query;
+        const page = parseInt(req.query.page) || 1; // Default to page 1
+        console.log("🚀 ~ handleGetAllProducts ~ page:", page)
+        const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
+        console.log("🚀 ~ handleGetAllProducts ~ limit:", limit)
+        console.log("🚀 ~ handleGetAllProducts ~ offset:", offset)
 
-        // Convert page and limit to numbers
-        const pageNum = parseInt(page, 10);
-        const limitNum = parseInt(limit, 10);
-
-        // Validate page and limit
-        if (pageNum < 1 || limitNum < 1) {
-            return res.status(400).json({
-                message: "Page and limit must be greater than 0."
-            });
-        }
-
-        const result = await productService.getProducts(userId, pageNum, limitNum);
-
-        if (!result) {
+        const { count, rows: products } = await productService.getProducts(userId, { limit, offset });
+        
+        if (products.length === 0) {
             return res.status(404).json({
                 message: "No products found"
             });
         }
-
+        
         res.status(200).json({
             message: "Products fetched successfully",
-            data: result.products, 
-            total: result.total, 
-            page: pageNum,
-            limit: limitNum
+            data: products,
+            total: count,
+            currentPage: page,
+            totalPages: Math.ceil(count / limit)
         });
     } catch (error) {
         console.error(error);

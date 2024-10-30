@@ -29,30 +29,23 @@ const createProduct = async (body) => {
 };
 
 
-const getProducts = async (userId, page, limit) => {
+const getProducts = async (userId, { limit, offset }) => {
     try {
-        const offset = (page - 1) * limit;
-
-        const { count, rows } = await productSchema.findAndCountAll({
+        const result = await productSchema.findAndCountAll({
             where: {
                 createdBy: userId
             },
+            limit,
+            offset,
             include: [
                 {
                     model: userSchema,
                     as: 'creator',
                     attributes: ['id', 'name', 'email']
                 }
-            ],
-            limit: limit, 
-            offset: offset 
+            ]
         });
-
-        if (rows.length === 0) {
-            return { products: [], total: count }; 
-        }
-
-        return { products: rows, total: count }; 
+        return result; // Now returns both count and rows
     } catch (error) {
         throw error;
     }
