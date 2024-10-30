@@ -31,10 +31,7 @@ const handleGetAllProducts = async (req, res) => {
     try {
         const userId = req?.user;
         const page = parseInt(req.query.page) || 1; // Default to page 1
-        console.log("🚀 ~ handleGetAllProducts ~ page:", page)
         const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
-        console.log("🚀 ~ handleGetAllProducts ~ limit:", limit)
-        console.log("🚀 ~ handleGetAllProducts ~ offset:", offset)
 
         const { count, rows: products } = await productService.getProducts(userId, { limit, offset });
         
