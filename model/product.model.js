@@ -1,4 +1,3 @@
-// models/product.model.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/connectDb");
 const userSchema = require("./user.model");
@@ -13,32 +12,32 @@ const productSchema = sequelize.define('Product', {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true, // Ensure the name is not empty
+            notEmpty: true, 
         },
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull: true, // Description is optional
+        allowNull: true, 
     },
     price: {
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
-            isFloat: true, // Ensure the price is a float
-            min: 0, // Price should be at least 0
+            isFloat: true, 
+            min: 0, 
         },
     },
     quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            isInt: true, // Ensure quantity is an integer
-            min: 0, // Quantity should be at least 0
+            isInt: true, 
+            min: 0, 
         },
     },
     category: {
         type: DataTypes.STRING,
-        allowNull: true, // Category is optional
+        allowNull: true, 
     },
     createdBy: {
         type: DataTypes.UUID,
@@ -60,7 +59,7 @@ productSchema.belongsTo(userSchema,{
     as: 'creator'  
 })
 
-// Synchronize the model with the database
+
 sequelize.sync()
     .then(() => console.log('Product table created successfully'))
     .catch(err => console.error('Error creating product table', err));
