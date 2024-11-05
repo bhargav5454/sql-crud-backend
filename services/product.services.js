@@ -132,5 +132,4 @@ module.exports = {
   updateProduct,
   deleteProductById,
   deleteAllProducts,
-  getProductList,
 };

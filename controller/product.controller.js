@@ -150,5 +150,4 @@ module.exports = {
   handleUpdateProduct,
   handleDeleteProductById,
   handleDeleteAllProducts,
-  handleGetProductList,
 };
